@@ -11,18 +11,35 @@ namespace Lab_1.ViewModels
 {
     public class ApplicationViewModel : INotifyPropertyChanged
     {
+        #region Fields
+
+        private const string ChineseCap = "Your chinese zodiac:\n";
+        private const string WesternCap = "Your western zodiac:\n";
+        private const string AgeCap = "Your age:\n";
         private Person _customer;
+
+        #endregion
+
+        #region Props
+
+        public string Age => _customer != null ? AgeCap + _customer.Age : "";
+
+        public string Wz => _customer != null ? WesternCap + _customer.Wz : "";
+
+        public string Cz => _customer != null ? ChineseCap + _customer.Cz : "";
 
         public DateTime VmBirthday { get; set; }
 
         public SetBirthdayCommand SetBirthdayCommand { get; set; }
 
+        #endregion
+
         public ApplicationViewModel()
         {
+            VmBirthday = DateTime.Today;
             SetBirthdayCommand = new SetBirthdayCommand(this);
         }
 
-//                23-Feb-00
         public async Task<bool> SetBirthday()
         {
             return await Task.Run(() =>
@@ -38,6 +55,7 @@ namespace Lab_1.ViewModels
                 {
                     return false;
                 }
+
                 return true;
             });
         }
@@ -48,23 +66,17 @@ namespace Lab_1.ViewModels
                 MessageBox.Show(Person.GetGreeting());
         }
 
+        public static void ShowError(string why)
+        {
+            MessageBox.Show(why);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public string Age => _customer != null ? _customer.Age.ToString() : "";
-
-        public string Wz => _customer != null ? _customer.Wz.ToString() : "";
-
-        public string Cz => _customer != null ? _customer.Cz.ToString() : "";
-
-        public static void ShowError(string why)
-        {
-            MessageBox.Show(why);
         }
     }
 }

@@ -9,10 +9,11 @@ namespace Lab_1.Models
 
         public Person(DateTime birthday)
         {
-            Thread.Sleep(1000);
-            DateTime today = DateTime.UtcNow;
+            _birthday = birthday;
+            DateTime today = DateTime.Today;
             Age = today.Year - birthday.Year;
-            if (_birthday.Date > today.AddYears(-Age)) --Age;
+            if (_birthday.Date > today.AddYears(-Age).Date) 
+                --Age;
             if (Age > 135 || Age < 0 || birthday.Date > today.Date)
                 throw new ArgumentException("incorrect birthday date");
             _birthday = birthday;
@@ -30,10 +31,10 @@ namespace Lab_1.Models
             return "Happy birthday!";
         }
 
-        public int Age { get; private set; }
+        public int Age { get; }
 
-        public Zodiac.WesternZodiac Wz { get; private set; }
+        public Zodiac.WesternZodiac Wz { get; }
 
-        public Zodiac.ChineseZodiac Cz { get; private set; }
+        public Zodiac.ChineseZodiac Cz { get; }
     }
 }

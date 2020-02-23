@@ -58,10 +58,12 @@
         <Compile Include="Tools\BaseViewModel.cs" />
         <Compile Include="Tools\ILoaderOwner.cs" />
         <Compile Include="Tools\Managers\LoaderManager.cs" />
-        <Compile Include="Tools\MVVM\PasswordBoxAssistant.cs" />
-        <Compile Include="Tools\MVVM\RelayCommand.cs" />
         <Compile Include="ViewModels\ApplicationViewModel.cs" />
         <Compile Include="ViewModels\Commands\SetBirthdayCommand.cs" />
+        <Compile Include="ViewModels\MainWindowViewModel.cs" />
+        <Compile Include="Views\BirthdateAsker.xaml.cs">
+          <DependentUpon>BirthdateAsker.xaml</DependentUpon>
+        </Compile>
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -74,6 +76,7 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Views\BirthdateAsker.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Models\Person.cs" />
@@ -94,9 +97,6 @@
     <ItemGroup>
         <None Include="App.config" />
         <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Views" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

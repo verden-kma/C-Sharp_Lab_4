@@ -14,3 +14,8 @@ C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\Lab_1.exe
 C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\Lab_1.pdb
 C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\Lab_1_MarkupCompile.lref
+C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\bin\Debug\FontAwesome.WPF.dll
+C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\bin\Debug\FontAwesome.WPF.xml
+C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\Views\BirthdateAsker.g.cs
+C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\Views\BirthdateAsker.baml
+C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\obj\Debug\Lab_1.csproj.CopyComplete

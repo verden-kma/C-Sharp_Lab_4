@@ -22,9 +22,9 @@ namespace Lab_1.ViewModels.Commands
         {
             LoaderManager.Instance.ShowLoader();
             var validCustomer = await ViewModel.SetBirthday();
+            LoaderManager.Instance.HideLoader();
             if (validCustomer) ViewModel.CheckBirthday();
             else ApplicationViewModel.ShowError("Incorrect date!");
-            LoaderManager.Instance.HideLoader();
         }
 
         public event EventHandler CanExecuteChanged;
