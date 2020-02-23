@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Lab_1.Models
 {
@@ -8,6 +9,7 @@ namespace Lab_1.Models
 
         public Person(DateTime birthday)
         {
+            Thread.Sleep(1000);
             DateTime today = DateTime.UtcNow;
             Age = today.Year - birthday.Year;
             if (_birthday.Date > today.AddYears(-Age)) --Age;

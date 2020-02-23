@@ -10,7 +10,7 @@ namespace Lab_1
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ApplicationViewModel();
+            DataContext = new MainWindowViewModel();
         }
     }
 }
