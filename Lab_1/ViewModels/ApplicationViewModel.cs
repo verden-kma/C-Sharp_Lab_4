@@ -57,8 +57,6 @@ namespace Lab_1.ViewModels
             MessageBox.Show($"IsBirthday: {_customer.IsBirthday}");
         }
 
-        //public SetUpCustomer CustomerSetup { get; set; }
-
         public string Name
         {
             get => _name;
@@ -106,7 +104,6 @@ namespace Lab_1.ViewModels
         public ApplicationViewModel()
         {
             VmBirthday = DateTime.Today;
-            //CustomerSetup = new SetUpCustomer(this);
             OnPropertyChanged();
         }
 
