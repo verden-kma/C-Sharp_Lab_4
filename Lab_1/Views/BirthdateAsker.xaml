@@ -29,22 +29,48 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <DatePicker SelectedDate="{Binding VmBirthday}" Grid.Column="1" Grid.Row="0"
+
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                    <TextBlock Text="Name"/>
+                <TextBox Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="16"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Grid.Row="0">
+                <TextBlock Text="Surname"/>
+                <TextBox Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            
+            <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding Path=Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <DatePicker SelectedDate="{Binding VmBirthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding VmBirthday, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Column="2" Grid.Row="0"
                         IsDropDownOpen="False"
                         SelectedDateFormat="Short" />
-            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource StandardText}" Text="{Binding Path=Age}" />
-            <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource StandardText}" Text="{Binding Path=Cz}" />
-            <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource StandardText}" Text="{Binding Path=Wz}" />
-            <Button Grid.Column="1" Grid.Row="2" Width="40" Height="20" VerticalAlignment="Bottom" Margin="0 20"
-                    Content="Ok"
-                    Command="{Binding SetBirthdayCommand, Source={StaticResource ViewModel}}" />
             
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1">
+                <TextBlock Text="Email"/>
+                <TextBox Text="{Binding Path=Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            
+            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource StandardText}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource StandardText}" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource StandardText}" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" />
+            
+            <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource StandardText}" Text="{Binding Path=Age}" />
+            <TextBlock Grid.Column="1" Grid.Row="3" Style="{StaticResource StandardText}" Text="{Binding Path=Cz}" />
+            <TextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource StandardText}" Text="{Binding Path=Wz}" />
+            
+            <Button Grid.Column="1" Grid.Row="3" Width="50" Height="20" VerticalAlignment="Bottom" Margin="0 20"
+                    Name="Proceeder"
+                    Content="Proceed"
+                    Command="{Binding ProceedCommand, Source={StaticResource ViewModel}}" />
         </Grid>
 
     </Border>

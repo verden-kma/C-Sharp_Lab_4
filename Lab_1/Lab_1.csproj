@@ -58,8 +58,9 @@
         <Compile Include="Tools\BaseViewModel.cs" />
         <Compile Include="Tools\ILoaderOwner.cs" />
         <Compile Include="Tools\Managers\LoaderManager.cs" />
+        <Compile Include="Tools\MVVM\RelayCommand.cs" />
         <Compile Include="ViewModels\ApplicationViewModel.cs" />
-        <Compile Include="ViewModels\Commands\SetBirthdayCommand.cs" />
+        <Compile Include="ViewModels\Commands\SetUpCustomer.cs" />
         <Compile Include="ViewModels\MainWindowViewModel.cs" />
         <Compile Include="Views\BirthdateAsker.xaml.cs">
           <DependentUpon>BirthdateAsker.xaml</DependentUpon>
