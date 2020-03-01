@@ -16,7 +16,8 @@ namespace Lab_1.ViewModels
 
         private const string ChineseCap = "Your chinese zodiac:\n";
         private const string WesternCap = "Your western zodiac:\n";
-        private const string AgeCap = "Your age:\n";
+        private const string AdultCap = "You are adult:\n";
+        private const string BirthdayCap = "It is your birthday today:\n";
         private Person _customer;
         private string _name;
         private string _surname;
@@ -29,8 +30,11 @@ namespace Lab_1.ViewModels
 
         public RelayCommand<object> ProceedCommand
         {
-            get { return _proceedCommand ?? (_proceedCommand = new RelayCommand<object>
-                             (o => ProceedCommandImpl(), o => CanProceed())); }
+            get
+            {
+                return _proceedCommand ?? (_proceedCommand = new RelayCommand<object>
+                    (o => ProceedCommandImpl(), o => CanProceed()));
+            }
         }
 
         private bool CanProceed()
@@ -45,16 +49,7 @@ namespace Lab_1.ViewModels
             string errorMessage = await SetCustomer();
             LoaderManager.Instance.HideLoader();
             if (string.IsNullOrEmpty(errorMessage)) CheckBirthday();
-            else
-            {
-                ShowError(errorMessage);
-                return;
-            }
-
-            MessageBox.Show($"IsAdult: {_customer.IsAdult}");
-            MessageBox.Show($"SunSign: {_customer.SunSign}");
-            MessageBox.Show($"ChineseSign: {_customer.ChineseSign}");
-            MessageBox.Show($"IsBirthday: {_customer.IsBirthday}");
+            else ShowError(errorMessage);
         }
 
         public string Name
@@ -89,32 +84,32 @@ namespace Lab_1.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        public string Age => _customer != null ? AgeCap + _customer.Age : "filler";
 
-        public string Wz => _customer != null ? WesternCap + _customer.SunSign : "filler";
-
-        public string Cz => _customer != null ? ChineseCap + _customer.ChineseSign : "filler";
+        public string IsBirthday => _customer != null ? BirthdayCap + _customer.IsBirthday : BirthdayCap;
+        public string IsAdult => _customer != null ? AdultCap + _customer.IsAdult : AdultCap;
+        public string Wz => _customer != null ? WesternCap + _customer.SunSign : WesternCap;
+        public string Cz => _customer != null ? ChineseCap + _customer.ChineseSign : ChineseCap;
 
         public DateTime VmBirthday { get; set; }
-
 
         #endregion
 
         public ApplicationViewModel()
         {
+            // init default
             VmBirthday = DateTime.Today;
             OnPropertyChanged();
         }
 
-        public async Task<string> SetCustomer()
+        private async Task<string> SetCustomer()
         {
             return await Task.Run(() =>
             {
                 try
                 {
                     _customer = new Person(Name, Surname, Email, VmBirthday);
-                    OnPropertyChanged(nameof(Age));
+                    OnPropertyChanged(nameof(IsBirthday));
+                    OnPropertyChanged(nameof(IsAdult));
                     OnPropertyChanged(nameof(Wz));
                     OnPropertyChanged(nameof(Cz));
                     return null;
@@ -126,13 +121,12 @@ namespace Lab_1.ViewModels
             });
         }
 
-        internal void CheckBirthday()
+        private void CheckBirthday()
         {
-            if (_customer.IsBirthday)
-                MessageBox.Show(_customer.GetGreeting());
+            if (_customer.IsBirthday) MessageBox.Show(_customer.GetGreeting());
         }
 
-        public static void ShowError(string why)
+        private static void ShowError(string why)
         {
             MessageBox.Show(why);
         }

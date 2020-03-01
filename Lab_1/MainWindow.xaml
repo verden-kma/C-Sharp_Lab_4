@@ -6,7 +6,7 @@
         xmlns:birthAsker="clr-namespace:Lab_1.Views"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="525">
+        Title="MainWindow" Height="450" Width="800">
         
         <Grid IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <birthAsker:BirthdateAsker />

@@ -15,8 +15,6 @@ namespace Lab_1.Models
         private string _email;
         private const string DefaultEmail = "yablonskyivr@ukma.edu.ua";
         private static readonly DateTime DefaultDate = new DateTime(1995, 5, 12);
-        private readonly Zodiac.WesternZodiac _westernZodiac;
-        private readonly Zodiac.ChineseZodiac _chineseZodiac;
 
         #endregion
 
@@ -61,8 +59,9 @@ namespace Lab_1.Models
         public int Age { get; }
 
         internal bool IsAdult => Age >= 18;
-        internal Zodiac.WesternZodiac SunSign => _westernZodiac;
-        internal Zodiac.ChineseZodiac ChineseSign => _chineseZodiac;
+        internal Zodiac.WesternZodiac SunSign { get; }
+
+        internal Zodiac.ChineseZodiac ChineseSign { get; }
 
         public bool IsBirthday => Birthday.Date.Month.Equals(DateTime.Today.Month) &&
                                   Birthday.Date.Day.Equals(DateTime.Today.Day);
@@ -81,8 +80,8 @@ namespace Lab_1.Models
             if (Age > 135 || Age < 0 || birthday.Date > today.Date)
                 throw new ArgumentException("incorrect birthday date");
             Birthday = birthday;
-            _westernZodiac = Zodiac.GetWestZodiac(birthday);
-            _chineseZodiac = Zodiac.GetChineseZodiac(birthday);
+            SunSign = Zodiac.GetWestZodiac(birthday);
+            ChineseSign = Zodiac.GetChineseZodiac(birthday);
         }
 
         internal Person(string name, string surname, string email = DefaultEmail, DateTime? birthday = null) : 
