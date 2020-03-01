@@ -4,7 +4,6 @@ namespace Lab_1.Views
 {
     public partial class BirthdateAsker
     {
-        public string PlaceholderText { get; set; }
         public BirthdateAsker()
         {
             InitializeComponent();
