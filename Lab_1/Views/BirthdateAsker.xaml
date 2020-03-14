@@ -46,13 +46,13 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Your email:" Style="{StaticResource StandardText}" />
-                <TextBox Text="{Binding Path=Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource StandardBox}" />
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Select date of your birthday: " Style="{StaticResource StandardText}" />
-                <DatePicker SelectedDate="{Binding VmBirthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Text="{Binding VmBirthday, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                <DatePicker SelectedDate="{Binding VmBirthday,UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding VmBirthday, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="16" Margin="0 5" />
             </StackPanel>
         </StackPanel>

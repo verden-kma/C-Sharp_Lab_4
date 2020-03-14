@@ -10,7 +10,7 @@ using Lab_1.Tools.MVVM;
 
 namespace Lab_1.ViewModels
 {
-    public class ApplicationViewModel : INotifyPropertyChanged
+    internal class ApplicationViewModel : INotifyPropertyChanged
     {
         #region Fields
 
@@ -94,7 +94,7 @@ namespace Lab_1.ViewModels
 
         #endregion
 
-        public ApplicationViewModel()
+        internal ApplicationViewModel()
         {
             // init default
             VmBirthday = DateTime.Today;

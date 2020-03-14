@@ -54,6 +54,9 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Models\Exceptions\IncorrectBirthday.cs" />
+        <Compile Include="Models\Exceptions\IncorrectEmail.cs" />
+        <Compile Include="Models\Exceptions\IrrelevantName.cs" />
         <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Tools\BaseViewModel.cs" />
         <Compile Include="Tools\ILoaderOwner.cs" />

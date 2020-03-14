@@ -18,7 +18,7 @@ namespace Lab_1.ViewModels
         // getters are used
         public Visibility LoaderVisibility
         {
-            get => _loaderVisibility;
+           get => _loaderVisibility;
             set
             {
                 _loaderVisibility = value;

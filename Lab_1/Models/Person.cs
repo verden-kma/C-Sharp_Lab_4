@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading;
+using Lab_1.Models.Exceptions;
 
 namespace Lab_1.Models
 {
-    public class Person
+    internal class Person
     {
         #region Fields
 
-        private readonly Regex _emailRegex =
-            new Regex("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$");
+        private const string EmailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+        private readonly Regex _emailRegex = new Regex(EmailPattern);
 
+        private const uint MinAge = 0;
+        private const uint MaxAge = 135;
+        
         private string _name;
         private string _surname;
         private string _email;
@@ -25,10 +30,9 @@ namespace Lab_1.Models
             get => _name;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Name is empty.");
-                if (value.Length < 2 || value.Length > 20)
-                    throw new ArgumentException("Name length must be in range [2;20] chars");
-                _name = value;
+                if (string.IsNullOrWhiteSpace(value) ||
+                    value.Length < 2 || value.Length > 20) throw new IrrelevantName(value);
+                _name = value.Trim();
             }
         }
 
@@ -37,10 +41,8 @@ namespace Lab_1.Models
             get => _surname;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Surname is empty.");
-                if (value.Length < 2 || value.Length > 20)
-                    throw new ArgumentException("Surname length must be in range [2;20] chars.");
-                _surname = value;
+                if (string.IsNullOrWhiteSpace(value) || value.Length < 2 || value.Length > 20) throw new IrrelevantName(value);
+                _surname = value.Trim();
             }
         }
 
@@ -49,21 +51,20 @@ namespace Lab_1.Models
             get => _email;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Email is empty.");
-                if (!_emailRegex.IsMatch(value)) throw new ArgumentException("Invalid email address.");
-                _email = value;
+                if (string.IsNullOrWhiteSpace(value) || !_emailRegex.IsMatch(value)) throw new IncorrectEmail(value, EmailPattern);
+                _email = value.Trim();
             }
         }
 
         private DateTime Birthday { get; }
-        public int Age { get; }
+        private int Age { get; }
 
         internal bool IsAdult => Age >= 18;
         internal Zodiac.WesternZodiac SunSign { get; }
 
         internal Zodiac.ChineseZodiac ChineseSign { get; }
 
-        public bool IsBirthday => Birthday.Date.Month.Equals(DateTime.Today.Month) &&
+        internal bool IsBirthday => Birthday.Date.Month.Equals(DateTime.Today.Month) &&
                                   Birthday.Date.Day.Equals(DateTime.Today.Day);
 
         #endregion
@@ -72,13 +73,14 @@ namespace Lab_1.Models
 
         private Person(DateTime birthday)
         {
+            Thread.Sleep(2000);
             Birthday = birthday;
             DateTime today = DateTime.Today;
             Age = today.Year - birthday.Year;
             if (Birthday.Date > today.AddYears(-Age).Date)
                 --Age;
-            if (Age > 135 || Age < 0 || birthday.Date > today.Date)
-                throw new ArgumentException("incorrect birthday date");
+            if (Age > MaxAge || Age < MinAge || birthday.Date > today.Date)
+                throw new IncorrectBirthday(birthday.Date, MinAge, MaxAge);
             Birthday = birthday;
             SunSign = Zodiac.GetWestZodiac(birthday);
             ChineseSign = Zodiac.GetChineseZodiac(birthday);
@@ -92,19 +94,11 @@ namespace Lab_1.Models
             Email = email;
         }
 
-        private Person(string name, string surname, string email) : this(name, surname, email, null)
-        {
-        }
-
-        private Person(string name, string surname, DateTime birthday) : this(name, surname, DefaultEmail, birthday)
-        {
-        }
-
         #endregion
 
-        public string GetGreeting()
+        internal string GetGreeting()
         {
-            return $"Happy birthday, {Name}!";
+            return $"Happy birthday, {Name} {Surname}!\nCheckout your mail {Email} :)";
         }
     }
 }
