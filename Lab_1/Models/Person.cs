@@ -73,7 +73,6 @@ namespace Lab_1.Models
 
         private Person(DateTime birthday)
         {
-            Thread.Sleep(2000);
             Birthday = birthday;
             DateTime today = DateTime.Today;
             Age = today.Year - birthday.Year;
