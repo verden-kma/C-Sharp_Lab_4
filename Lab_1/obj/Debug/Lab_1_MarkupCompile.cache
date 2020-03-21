@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Andrew\RiderProjects\Lab_1\Lab_1\App.xaml
-21979477324
+3-780183111
 
-17278697293
+23-164285478
 101208182012
-MainWindow.xaml;Views\BirthdateAsker.xaml;
+MainWindow.xaml;Views\PeopleView.xaml;Views\PersonDataEditor.xaml;
 
 True
 

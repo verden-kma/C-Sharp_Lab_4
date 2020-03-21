@@ -1,71 +1,103 @@
 ﻿using System;
+using System.ComponentModel;
+
 using System.Text.RegularExpressions;
-using System.Threading;
 using Lab_1.Models.Exceptions;
 
 namespace Lab_1.Models
 {
-    internal class Person
+    [Serializable]
+    internal class Person : INotifyPropertyChanged, IEditableObject
     {
         #region Fields
 
         private const string EmailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         private readonly Regex _emailRegex = new Regex(EmailPattern);
+        private static uint _freeId;
 
+        private readonly uint _id;
         private const uint MinAge = 0;
         private const uint MaxAge = 135;
-        
-        private string _name;
-        private string _surname;
-        private string _email;
-        private const string DefaultEmail = "yablonskyivr@ukma.edu.ua";
-        private static readonly DateTime DefaultDate = new DateTime(1995, 5, 12);
+
+        private bool _isEditing;
+        private PersonData _backup;
+        private PersonData _curr;
+
+        [Serializable]
+        private struct PersonData
+        {
+            internal string Name;
+            internal string Surname;
+            internal string Email;
+            internal DateTime Birthday;
+            internal const string DefaultEmail = "yablonskyivr@ukma.edu.ua";
+            internal static readonly DateTime DefaultDate = new DateTime(1995, 5, 12);
+        }
 
         #endregion
 
         #region Props
 
-        private string Name
+        public uint Id => _id;
+
+        public string Name
         {
-            get => _name;
+            get => _curr.Name;
             set
             {
                 if (string.IsNullOrWhiteSpace(value) ||
                     value.Length < 2 || value.Length > 20) throw new IrrelevantName(value);
-                _name = value.Trim();
+                _curr.Name = value.Trim();
             }
         }
 
-        private string Surname
+        public string Surname
         {
-            get => _surname;
+            get => _curr.Surname;
             set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Length < 2 || value.Length > 20) throw new IrrelevantName(value);
-                _surname = value.Trim();
+                if (string.IsNullOrWhiteSpace(value) || value.Length < 2 || value.Length > 20)
+                    throw new IrrelevantName(value);
+                _curr.Surname = value.Trim();
             }
         }
 
-        private string Email
+        public string Email
         {
-            get => _email;
+            get => _curr.Email;
             set
             {
-                if (string.IsNullOrWhiteSpace(value) || !_emailRegex.IsMatch(value)) throw new IncorrectEmail(value, EmailPattern);
-                _email = value.Trim();
+                if (string.IsNullOrWhiteSpace(value) || !_emailRegex.IsMatch(value = value.Trim()))
+                    throw new IncorrectEmail(value, EmailPattern);
+                _curr.Email = value;
             }
         }
 
-        private DateTime Birthday { get; }
-        private int Age { get; }
+        public DateTime Birthday
+        {
+            get => _curr.Birthday.Date;
+            set
+            {
+                int proposedAge = CalcAge(value);
+                if (!AgeIsValid(proposedAge, value)) 
+                    throw new IncorrectBirthday(value.Date, MinAge, MaxAge);
+                _curr.Birthday = value;
+                IsAdult = proposedAge >= 18;
+                IsBirthday = Birthday.Date.Month.Equals(DateTime.Today.Month) &&
+                             Birthday.Date.Day.Equals(DateTime.Today.Day);
+                SunSign = Zodiac.GetWestZodiac(Birthday);
+                ChineseSign = Zodiac.GetChineseZodiac(Birthday);
+            }
+        }
 
-        internal bool IsAdult => Age >= 18;
-        internal Zodiac.WesternZodiac SunSign { get; }
+        public int Age { get; set; }
 
-        internal Zodiac.ChineseZodiac ChineseSign { get; }
+        public bool IsAdult { get; set; }
+        public Zodiac.WesternZodiac SunSign { get; set; }
 
-        internal bool IsBirthday => Birthday.Date.Month.Equals(DateTime.Today.Month) &&
-                                  Birthday.Date.Day.Equals(DateTime.Today.Day);
+        public Zodiac.ChineseZodiac ChineseSign { get; set; }
+
+        public bool IsBirthday { get; set; }
 
         #endregion
 
@@ -73,20 +105,35 @@ namespace Lab_1.Models
 
         private Person(DateTime birthday)
         {
+            _id = _freeId++;
             Birthday = birthday;
-            DateTime today = DateTime.Today;
-            Age = today.Year - birthday.Year;
-            if (Birthday.Date > today.AddYears(-Age).Date)
-                --Age;
-            if (Age > MaxAge || Age < MinAge || birthday.Date > today.Date)
+            Age = CalcAge(Birthday);
+            AgeIsValid(Age, birthday);
+            if (!AgeIsValid(Age, birthday))
                 throw new IncorrectBirthday(birthday.Date, MinAge, MaxAge);
+            IsAdult = Age >= 18;
+            IsBirthday = Birthday.Date.Month.Equals(DateTime.Today.Month) &&
+                         Birthday.Date.Day.Equals(DateTime.Today.Day);
             Birthday = birthday;
             SunSign = Zodiac.GetWestZodiac(birthday);
             ChineseSign = Zodiac.GetChineseZodiac(birthday);
         }
 
-        internal Person(string name, string surname, string email = DefaultEmail, DateTime? birthday = null) : 
-            this(birthday ?? DefaultDate)
+        private int CalcAge(DateTime d)
+        {
+            int age = d.Year - d.Year;
+            if (d.Date > d.AddYears(-age).Date) --age;
+            return age;
+        }
+
+        private bool AgeIsValid(int age, DateTime birthday)
+        {
+            return !(age > MaxAge || age < MinAge || birthday.Date > DateTime.Today.Date);
+        }
+
+        internal Person(string name, string surname, string email = PersonData.DefaultEmail,
+            DateTime? birthday = null) :
+            this(birthday ?? PersonData.DefaultDate)
         {
             Name = name;
             Surname = surname;
@@ -98,6 +145,33 @@ namespace Lab_1.Models
         internal string GetGreeting()
         {
             return $"Happy birthday, {Name} {Surname}!\nCheckout your mail {Email} :)";
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void BeginEdit()
+        {
+            if (_isEditing) return;
+            _isEditing = true;
+            _backup = _curr;
+        }
+
+        public void EndEdit()
+        {
+            _backup = new PersonData();
+            _isEditing = false;
+        }
+
+        public void CancelEdit()
+        {
+            if (!_isEditing) return;
+            _curr = _backup;
+            _isEditing = false;
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {_id}\nName: {_curr.Name} Birthday: \n{Birthday}";
         }
     }
 }

@@ -59,13 +59,21 @@
         <Compile Include="Models\Exceptions\IrrelevantName.cs" />
         <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Tools\BaseViewModel.cs" />
+        <Compile Include="Tools\DataStorage\IDataStorage.cs" />
+        <Compile Include="Tools\DataStorage\SerializedDataStorage.cs" />
+        <Compile Include="Tools\FileFolderHandler.cs" />
         <Compile Include="Tools\ILoaderOwner.cs" />
         <Compile Include="Tools\Managers\LoaderManager.cs" />
+        <Compile Include="Tools\Managers\SerializationManager.cs" />
         <Compile Include="Tools\MVVM\RelayCommand.cs" />
         <Compile Include="ViewModels\ApplicationViewModel.cs" />
         <Compile Include="ViewModels\MainWindowViewModel.cs" />
-        <Compile Include="Views\BirthdateAsker.xaml.cs">
-          <DependentUpon>BirthdateAsker.xaml</DependentUpon>
+        <Compile Include="ViewModels\PeopleVM.cs" />
+        <Compile Include="Views\PeopleView.xaml.cs">
+          <DependentUpon>PeopleView.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Views\PersonDataEditor.xaml.cs">
+          <DependentUpon>PersonDataEditor.xaml</DependentUpon>
         </Compile>
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
@@ -79,7 +87,8 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Page Include="Views\BirthdateAsker.xaml" />
+        <Page Include="Views\PeopleView.xaml" />
+        <Page Include="Views\PersonDataEditor.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Models\Person.cs" />

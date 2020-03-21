@@ -24,6 +24,8 @@ namespace Lab_1.ViewModels
         private string _email;
         private RelayCommand<object> _proceedCommand;
 
+        private ICollectionView _cv;
+
         #endregion
 
         #region Props
@@ -94,10 +96,11 @@ namespace Lab_1.ViewModels
 
         #endregion
 
-        internal ApplicationViewModel()
+        internal ApplicationViewModel(ICollectionView cv)
         {
             // init default
             VmBirthday = DateTime.Today;
+            _cv = cv;
             OnPropertyChanged();
         }
 
