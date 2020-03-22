@@ -36,6 +36,104 @@ namespace Lab_1.ViewModels
 
         #endregion
 
+        #region FilterProps
+
+        private DateTime _fromDate = DateTime.Today;
+        private DateTime _toDate = DateTime.Today;
+
+        private uint _minAge;
+        private uint _maxAge;
+
+        public string NameStart { get; set; }
+        public string SurnameStart { get; set; }
+
+        public bool NeedDate { get; set; }
+        
+        public DateTime BDayFrom
+        {
+            get => _fromDate;
+            set
+            {
+                _fromDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime BDayTo
+        {
+            get => _toDate;
+            set
+            {
+                _toDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public uint AgeMin
+        {
+            get => _minAge;
+            set
+            {
+                if (value > 135)
+                {
+                    MessageBox.Show("Age = [0;135]");
+                    throw new ArgumentException("too old");
+                }
+
+                _minAge = value;
+            }
+        }
+
+        public uint AgeMax
+        {
+            get => _maxAge;
+            set
+            {
+                if (value > 135)
+                {
+                    MessageBox.Show("Age = [0;135]");
+                    throw new ArgumentException("too old");
+                }
+
+                _maxAge = value;
+            }
+        }
+
+        public bool NeedAdult { get; set; }
+        public bool NeedBirthday { get; set; }
+
+        #region Zodiacs
+
+        public bool NeedAries { get; set; }
+        public bool NeedTaurus { get; set; }
+        public bool NeedGemini { get; set; }
+        public bool NeedCancer { get; set; }
+        public bool NeedLeo { get; set; }
+        public bool NeedVirgo { get; set; }
+        public bool NeedLibra { get; set; }
+        public bool NeedScorpio { get; set; }
+        public bool NeedSagittarius { get; set; }
+        public bool NeedCapricorn { get; set; }
+        public bool NeedAquarius { get; set; }
+        public bool NeedPisces { get; set; }
+
+        public bool NeedMonkey { get; set; }
+        public bool NeedRooster { get; set; }
+        public bool NeedDog { get; set; }
+        public bool NeedPig { get; set; }
+        public bool NeedRat { get; set; }
+        public bool NeedOx { get; set; }
+        public bool NeedTiger { get; set; }
+        public bool NeedRabbit { get; set; }
+        public bool NeedDragon { get; set; }
+        public bool NeedSnake { get; set; }
+        public bool NeedHorse { get; set; }
+        public bool NeedGoat { get; set; }
+
+        #endregion
+
+        #endregion
+
         internal PeopleVM()
         {
             ViewList = new PeopleCollection(_backList);
@@ -211,6 +309,7 @@ namespace Lab_1.ViewModels
                 MessageBox.Show("Incorrect person data input.");
                 return;
             }
+
             Person p = new Person(Name, Surname, Email, Birthday);
             ViewList.Add(p);
             _backList.Add(p);
@@ -231,9 +330,19 @@ namespace Lab_1.ViewModels
 
         private bool CanFilter()
         {
-            return _backList.Count != 0;
+            return _backList.Count != 0 &&
+                   (!string.IsNullOrEmpty(NameStart) || !string.IsNullOrEmpty(SurnameStart) || NeedDate 
+                                                     || NeedBirthday || NeedAdult || AgeMax != 0 || CheckSigns() );
         }
 
+        private bool CheckSigns()
+        {
+            return NeedAries || NeedTaurus || NeedGemini || NeedCancer || NeedLeo || NeedVirgo || NeedLibra ||
+                   NeedScorpio || NeedSagittarius || NeedCapricorn || NeedAquarius || NeedPisces
+                   || NeedMonkey || NeedRooster || NeedDog || NeedPig || NeedRat || NeedOx || NeedTiger || NeedRabbit ||
+                   NeedDragon || NeedSnake || NeedHorse || NeedGoat;
+        }
+        
         private void FilterCommandImpl()
         {
             MessageBox.Show("not implemented");
@@ -248,6 +357,8 @@ namespace Lab_1.ViewModels
             }
         }
 
+        #region OnProperty
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -255,5 +366,7 @@ namespace Lab_1.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

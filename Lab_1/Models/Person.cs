@@ -13,7 +13,7 @@ namespace Lab_1.Models
         #region Fields
 
         private const string EmailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-        private static readonly Regex _emailRegex = new Regex(EmailPattern);
+        private static readonly Regex EmailRegex = new Regex(EmailPattern);
         private static uint _freeId;
 
         private readonly uint _id;
@@ -94,7 +94,7 @@ namespace Lab_1.Models
 
         internal static bool EmailIsValid(string email)
         {
-            return !string.IsNullOrWhiteSpace(email) && _emailRegex.IsMatch(email);
+            return !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
         }
 
         public DateTime Birthday
@@ -174,7 +174,7 @@ namespace Lab_1.Models
 
         #region Constructors
 
-        internal Person(string name = "Apple", string surname = "Vovan", string email = PersonCoreData.DefaultEmail,
+        internal Person(string name = "Apple", string surname = "Vowan", string email = PersonCoreData.DefaultEmail,
             DateTime? birthday = null) :
             this(birthday ?? PersonCoreData.DefaultBirthday)
         {

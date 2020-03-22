@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="550" d:DesignWidth="900"
+             d:DesignHeight="750" d:DesignWidth="900"
              xmlns:viewModels="clr-namespace:Lab_1.ViewModels">
 
     <UserControl.Resources>
@@ -17,7 +17,7 @@
         <Style TargetType="StackPanel" x:Key="PanelMerge">
             <Setter Property="Margin" Value="5" />
         </Style>
-        
+
         <Style TargetType="TextBox" x:Key="DefaultTBSize">
             <Setter Property="Width" Value="100" />
             <Setter Property="Height" Value="24" />
@@ -29,6 +29,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="7*" />
             <RowDefinition Height="3*" />
+            <RowDefinition Height="4*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -39,66 +40,73 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="List of people" HorizontalAlignment="Center"
                    FontSize="16" FontWeight="Bold" />
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding Path=ViewList}"
-                  SelectedItem="{Binding Path=Selected}"
-                  AlternatingRowBackground="LightSlateGray" CanUserAddRows="True" AutoGenerateColumns="False"
-                  CanUserReorderColumns="False" CanUserSortColumns="False">
-
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Command"
-                            Value="{Binding DataContext.SortCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                    <Setter Property="CommandParameter"
-                            Value="{Binding Path=Content, RelativeSource={RelativeSource Self}}" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnExceptions=True}" Width="2*" />
-
-                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname, ValidatesOnExceptions=True}" Width="2*" />
-
-                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email, ValidatesOnExceptions=True}" Width="3*" />
-
-                <DataGridTemplateColumn Header="Birthday" Width="2*">
-
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Birthday, StringFormat=d}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Path=Birthday, ValidatesOnExceptions=True}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-
-                </DataGridTemplateColumn>
-
-                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" Width="*" />
-
-                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}"
-                                        IsReadOnly="True" Width="*" />
-
-                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}"
-                                        IsReadOnly="True" Width="*" />
-
-                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}" IsReadOnly="True"
-                                    Width="2*" />
-
-                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}"
-                                    IsReadOnly="True" Width="2*" />
-
-            </DataGrid.Columns>
-        </DataGrid>
         
+            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      ItemsSource="{Binding Path=ViewList}" SelectedItem="{Binding Path=Selected}"
+                      AlternatingRowBackground="LightSlateGray" CanUserAddRows="True" AutoGenerateColumns="False"
+                      CanUserReorderColumns="False" CanUserSortColumns="False">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Command"
+                                Value="{Binding DataContext.SortCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                        <Setter Property="CommandParameter"
+                                Value="{Binding Path=Content, RelativeSource={RelativeSource Self}}" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnExceptions=True}"
+                                        Width="2*" MinWidth="100" MaxWidth="200"/>
+
+                    <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname, ValidatesOnExceptions=True}"
+                                        Width="2*" MinWidth="100" MaxWidth="200"/>
+
+                    <DataGridTextColumn Header="Email" Binding="{Binding Path=Email, ValidatesOnExceptions=True}"
+                                        Width="3*" MinWidth="200" MaxWidth="400"/>
+
+                    <DataGridTemplateColumn Header="Birthday" Width="2*" MinWidth="100" MaxWidth="200">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Birthday, StringFormat=d}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <DatePicker SelectedDate="{Binding Path=Birthday, ValidatesOnExceptions=True}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" 
+                                        Width="*" MinWidth="75" MaxWidth="150"/>
+
+                    <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}"
+                                            IsReadOnly="True" Width="*" MinWidth="50" MaxWidth="100"/>
+
+                    <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}"
+                                            IsReadOnly="True" Width="*" MinWidth="50" MaxWidth="100"/>
+
+                    <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}"
+                                        IsReadOnly="True"
+                                        Width="2*" MinWidth="100" MaxWidth="200"/>
+
+                    <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}"
+                                        IsReadOnly="True" Width="2*" MinWidth="100" MaxWidth="200"/>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -106,19 +114,19 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}" >
+            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                 <TextBlock Text="Name: " Margin="0 5 0 0" />
                 <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Name}"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                 <TextBlock Text="Surname: " Margin="0 5 0 0" />
-                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Surname}"/>
+                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Surname}" />
             </StackPanel>
 
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                 <TextBlock Text="Email: " Margin="0 5 0 0" />
-                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Email}"/>
+                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Email}" />
             </StackPanel>
 
             <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
@@ -127,11 +135,210 @@
                             Text="{Binding Birthday, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="16" Margin="0 5" />
             </StackPanel>
-            
-            <Separator Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Height="20"/>
+
+            <Separator Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Height="20" />
         </Grid>
 
-        <ItemsControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
+        <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="4*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" HorizontalAlignment="Center" Text="Filters"
+                           FontSize="24" FontWeight="Bold" />
+
+                <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource PanelMerge}">
+                    <TextBlock Text="Name starts with:" />
+                    <TextBox Text="{Binding Path=NameStart, Mode=OneWayToSource}" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="1" Style="{StaticResource PanelMerge}">
+                    <TextBlock Text="Surname starts with:" />
+                    <TextBox Text="{Binding Path=SurnameStart, Mode=OneWayToSource}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="2" Style="{StaticResource PanelMerge}">
+                    <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Birthday" />
+                    <CheckBox IsChecked="{Binding Path=NeedDate, Mode=OneWayToSource}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                        <TextBlock Text="From: " />
+                        <DatePicker SelectedDate="{Binding BDayFrom, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding BDayFrom, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                        <TextBlock Text="To: " />
+                        <DatePicker SelectedDate="{Binding BDayTo, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding BDayTo, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="3" Style="{StaticResource PanelMerge}">
+                    <TextBlock Text="Age" />
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                        <TextBlock Text="From: " />
+                        <TextBox Text="{Binding Path=AgeMin, ValidatesOnExceptions=True}" MinWidth="30" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                        <TextBlock Text="To: " />
+                        <TextBox Text="{Binding Path=AgeMax, ValidatesOnExceptions=True}" MinWidth="30"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="4" Style="{StaticResource PanelMerge}">
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                        <TextBlock Text="Is Adult: " />
+                        <CheckBox IsChecked="{Binding Path=NeedAdult, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                        <TextBlock Text="Is Birthday: " />
+                        <CheckBox IsChecked="{Binding Path=NeedBirthday, Mode=OneWayToSource}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="5" Style="{StaticResource PanelMerge}">
+                    <TextBlock Text="Western signs:" FontStyle="Italic" FontSize="16"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Style="{StaticResource PanelMerge}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Aries: " />
+                                <CheckBox IsChecked="{Binding Path=NeedAries, Mode=OneWayToSource}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Taurus: " />
+                                <CheckBox IsChecked="{Binding Path=NeedTaurus, Mode=OneWayToSource}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Gemini: " />
+                                <CheckBox IsChecked="{Binding Path=NeedGemini, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Cancer: " />
+                                <CheckBox IsChecked="{Binding Path=NeedCancer, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource PanelMerge}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Leo: " />
+                                <CheckBox IsChecked="{Binding Path=NeedLeo, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Virgo: " />
+                                <CheckBox IsChecked="{Binding Path=NeedVirgo, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Libra: " />
+                                <CheckBox IsChecked="{Binding Path=NeedLibra, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Scorpio: " />
+                                <CheckBox IsChecked="{Binding Path=NeedScorpio, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource PanelMerge}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Sagittarius: " />
+                                <CheckBox IsChecked="{Binding Path=NeedSagittarius, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Capricorn: " />
+                                <CheckBox IsChecked="{Binding Path=NeedCapricorn, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Aquarius: " />
+                                <CheckBox IsChecked="{Binding Path=NeedAquarius, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Pisces: " />
+                                <CheckBox IsChecked="{Binding Path=NeedPisces, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <StackPanel Grid.Row="1" Grid.Column="6" Margin="5">
+                    <TextBlock Text="Chinese signs:" FontStyle="Italic" FontSize="16"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Style="{StaticResource PanelMerge}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Monkey: " />
+                                <CheckBox IsChecked="{Binding Path=NeedMonkey, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Rooster: " />
+                                <CheckBox IsChecked="{Binding Path=NeedRooster, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Dog: " />
+                                <CheckBox IsChecked="{Binding Path=NeedDog, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Pig: " />
+                                <CheckBox IsChecked="{Binding Path=NeedPig, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource PanelMerge}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Rat: " />
+                                <CheckBox IsChecked="{Binding Path=NeedRat, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Ox: " />
+                                <CheckBox IsChecked="{Binding Path=NeedOx, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Tiger: " />
+                                <CheckBox IsChecked="{Binding Path=NeedTiger, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Rabbit: " />
+                                <CheckBox IsChecked="{Binding Path=NeedRabbit, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource PanelMerge}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Dragon: " />
+                                <CheckBox IsChecked="{Binding Path=NeedDragon, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Snake: " />
+                                <CheckBox IsChecked="{Binding Path=NeedSnake, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Horse: " />
+                                <CheckBox IsChecked="{Binding Path=NeedHorse, Mode=OneWayToSource}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Goat: " />
+                                <CheckBox IsChecked="{Binding Path=NeedGoat, Mode=OneWayToSource}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+
+        </ScrollViewer>
+
+        <ItemsControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter Property="FrameworkElement.Margin" Value="5" />
