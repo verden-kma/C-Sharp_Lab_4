@@ -7,6 +7,7 @@ namespace Lab_1.Models.Exceptions
         private readonly uint _minLen;
         private readonly uint _maxLen;
         private readonly string _wrongName;
+
         internal IrrelevantName(string passedName, uint minLen = 2, uint maxLen = 20)
         {
             _wrongName = passedName;

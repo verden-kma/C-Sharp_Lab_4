@@ -4,9 +4,10 @@ using Lab_1.Annotations;
 
 namespace Lab_1.Tools
 {
-    internal abstract class BaseViewModel:INotifyPropertyChanged
+    internal abstract class BaseViewModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -14,6 +15,7 @@ namespace Lab_1.Tools
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         #endregion
     }
 }

@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:viewModels="clr-namespace:Lab_1.ViewModels">
-    
+
     <UserControl.Resources>
         <viewModels:PeopleVM x:Key="People" />
         <Style TargetType="Button" x:Key="ButtonStyle">
@@ -19,7 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="7*" />
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -27,24 +27,29 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="List of people" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding Path=ViewList}" SelectedItem="{Binding Path=Selected}" 
-                  AlternatingRowBackground="LightSlateGray" CanUserAddRows="True" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False">
-            
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="List of people" HorizontalAlignment="Center"
+                   FontSize="16" FontWeight="Bold" />
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding Path=ViewList}"
+                  SelectedItem="{Binding Path=Selected}"
+                  AlternatingRowBackground="LightSlateGray" CanUserAddRows="True" AutoGenerateColumns="False"
+                  CanUserReorderColumns="False" CanUserSortColumns="False">
+
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Command" Value="{Binding DataContext.SortCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                    <Setter Property="CommandParameter" Value="{Binding Path=Content, RelativeSource={RelativeSource Self}}"/>
+                    <Setter Property="Command"
+                            Value="{Binding DataContext.SortCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                    <Setter Property="CommandParameter"
+                            Value="{Binding Path=Content, RelativeSource={RelativeSource Self}}" />
                 </Style>
             </DataGrid.ColumnHeaderStyle>
-            
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
-                
-                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname}"/>
-                
-                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}"/>
-                
+
+                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname}" />
+
+                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" />
+
                 <DataGridTemplateColumn Header="Birthday"> <!-- SortMemberPath="Birthday" -->
 
                     <DataGridTemplateColumn.CellTemplate>
@@ -52,28 +57,28 @@
                             <TextBlock Text="{Binding Path=Birthday, StringFormat=d}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    
+
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <DatePicker SelectedDate="{Binding Path=Birthday}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
-                    
+
                 </DataGridTemplateColumn>
-                
-                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age}" />
-                
-                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult}" IsReadOnly="True"/>
-                
-                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday}" IsReadOnly="True"/>
-                
-                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign}" IsReadOnly="True"/>
-                
-                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign}" IsReadOnly="True"/>
-                
+
+                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" />
+
+                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}" IsReadOnly="True" />
+
+                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}" IsReadOnly="True" />
+
+                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}" IsReadOnly="True" />
+
+                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}" IsReadOnly="True" />
+
             </DataGrid.Columns>
-            </DataGrid>
-        
+        </DataGrid>
+
         <ItemsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
             <ItemsControl.ItemContainerStyle>
                 <Style>
@@ -85,14 +90,14 @@
                     <UniformGrid Rows="1" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            
+
             <ItemsControl.Items>
                 <Button Style="{StaticResource ButtonStyle}" Content="Filter" />
-                <Button Style="{StaticResource ButtonStyle}" Content="Remove" Command="{Binding Path=RemoveCommand}"/>
-                <Button Style="{StaticResource ButtonStyle}" Content="Save" Command="{Binding Path=SaveCommand}"/>
+                <Button Style="{StaticResource ButtonStyle}" Content="Remove" Command="{Binding Path=RemoveCommand}" />
+                <Button Style="{StaticResource ButtonStyle}" Content="Save" Command="{Binding Path=SaveCommand}" />
             </ItemsControl.Items>
         </ItemsControl>
-        
+
     </Grid>
 
 </UserControl>

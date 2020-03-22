@@ -5,7 +5,9 @@ namespace Lab_1.Models.Exceptions
     internal class IncorrectEmail : ArgumentException
     {
         private readonly string _badEmail;
+
         private readonly string _pattern;
+
         /*
          * Invalid email address.
          */

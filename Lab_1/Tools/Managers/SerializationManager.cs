@@ -44,11 +44,11 @@ namespace Lab_1.Tools.Managers
             }
             catch (FileNotFoundException ex)
             {
-                throw new FileNotFoundException($"Failed to Deserialize PersonExtract From File {filePath}", ex);
+                throw new FileNotFoundException($"Failed to Deserialize PersonCoreExtract From File {filePath}", ex);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Completely failed to Deserialize PersonExtract From File {filePath}", ex);
+                throw new Exception($"Completely failed to Deserialize PersonCoreExtract From File {filePath}", ex);
             }
         }
     }

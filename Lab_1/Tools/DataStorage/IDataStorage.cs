@@ -12,7 +12,7 @@ namespace Lab_1.Tools.DataStorage
         void AddPerson(Person p);
 
         void RemovePerson(Person p);
-        
+
         List<Person> PeopleList { get; }
     }
 }

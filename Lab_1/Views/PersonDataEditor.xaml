@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:Lab_1.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="StandardText">
             <Setter Property="FontSize" Value="16" />
@@ -18,8 +18,8 @@
         </Style>
         <viewModels:ApplicationViewModel x:Key="ViewModel" />
     </UserControl.Resources>
-    
-<Grid Margin="5 5" DataContext="{Binding Source={StaticResource ViewModel}}">
+
+    <Grid Margin="5 5" DataContext="{Binding Source={StaticResource ViewModel}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
             <RowDefinition />

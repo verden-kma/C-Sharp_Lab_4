@@ -50,7 +50,7 @@ namespace Lab_1.Models
         {
             return (ChineseZodiac) (dt.Year % 12);
         }
-        
+
         public enum WesternZodiac
         {
             Aries,
@@ -66,7 +66,7 @@ namespace Lab_1.Models
             Aquarius,
             Pisces
         }
-        
+
         //they are used indeed
         public enum ChineseZodiac
         {
@@ -84,5 +84,4 @@ namespace Lab_1.Models
             Goat = 11
         }
     }
-
 }

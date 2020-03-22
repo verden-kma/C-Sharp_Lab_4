@@ -24,6 +24,7 @@ namespace Lab_1.Tools
             {
                 file.Directory.Create();
             }
+
             return file.Exists;
         }
     }

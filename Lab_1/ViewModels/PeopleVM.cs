@@ -43,13 +43,16 @@ namespace Lab_1.ViewModels
             IEnumerable<Person> people = ViewList.AsEnumerable();
             // does not support changes from thread different from dispatcher thread
             LoaderManager.Instance.ShowLoader();
-            List<Person> sortedPeople = await Task.Run(() => 
-                (from person in people orderby person.GetType().GetProperty(propertyName).GetValue(person, null) select person).ToList());
+            List<Person> sortedPeople = await Task.Run(() =>
+                (from person in people
+                    orderby person.GetType().GetProperty(propertyName).GetValue(person, null)
+                    select person).ToList());
             ViewList.Clear();
             foreach (Person p in sortedPeople)
             {
                 ViewList.Add(p);
             }
+
             LoaderManager.Instance.HideLoader();
         }
 
@@ -87,7 +90,7 @@ namespace Lab_1.ViewModels
         private Task<string> SaveList()
         {
             _backList = ViewList.ToList();
-            IEnumerable<PersonData> pd = from person in _backList select person.PersonExtract;
+            IEnumerable<PersonCoreData> pd = from person in _backList select person.PersonCoreExtract;
             try
             {
                 SerializationManager.Serialize(pd.ToList(), FileFolderHandler.StorageFilePath);

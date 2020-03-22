@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using Lab_1.Annotations;
 using Lab_1.Models.Exceptions;
 
 namespace Lab_1.Models
 {
-
     internal class Person : INotifyPropertyChanged, IEditableObject
     {
         #region Fields
@@ -20,16 +20,25 @@ namespace Lab_1.Models
         private const uint MaxAge = 135;
 
         private bool _isEditing;
-        private PersonData _backup;
-        private PersonData _curr;
+        private PersonCoreData _backup;
+        private PersonCoreData _curr;
 
-        internal PersonData PersonExtract => _curr;
+        internal PersonCoreData PersonCoreExtract => _curr;
+        private PersonCalcData _backupCalc;
+        private PersonCalcData _currCalc;
 
         #endregion
 
-        #region Props
+        private struct PersonCalcData
+        {
+            internal int Age;
+            internal bool IsAdult;
+            internal bool IsBirthday;
+            internal Zodiac.WesternZodiac SunSign;
+            internal Zodiac.ChineseZodiac ChineseSign;
+        }
 
-        public uint Id => _id;
+        #region Props
 
         public string Name
         {
@@ -39,6 +48,7 @@ namespace Lab_1.Models
                 if (string.IsNullOrWhiteSpace(value) ||
                     value.Length < 2 || value.Length > 20) throw new IrrelevantName(value);
                 _curr.Name = value.Trim();
+                OnPropertyChanged();
             }
         }
 
@@ -50,6 +60,7 @@ namespace Lab_1.Models
                 if (string.IsNullOrWhiteSpace(value) || value.Length < 2 || value.Length > 20)
                     throw new IrrelevantName(value);
                 _curr.Surname = value.Trim();
+                OnPropertyChanged();
             }
         }
 
@@ -61,6 +72,7 @@ namespace Lab_1.Models
                 if (string.IsNullOrWhiteSpace(value) || !_emailRegex.IsMatch(value = value.Trim()))
                     throw new IncorrectEmail(value, EmailPattern);
                 _curr.Email = value;
+                OnPropertyChanged();
             }
         }
 
@@ -70,9 +82,11 @@ namespace Lab_1.Models
             set
             {
                 int proposedAge = CalcAge(value);
-                if (!AgeIsValid(proposedAge, value)) 
+                if (!AgeIsValid(proposedAge, value))
                     throw new IncorrectBirthday(value.Date, MinAge, MaxAge);
+                Age = proposedAge;
                 _curr.Birthday = value;
+                OnPropertyChanged();
                 IsAdult = proposedAge >= 18;
                 IsBirthday = Birthday.Date.Month.Equals(DateTime.Today.Month) &&
                              Birthday.Date.Day.Equals(DateTime.Today.Day);
@@ -81,14 +95,55 @@ namespace Lab_1.Models
             }
         }
 
-        public int Age { get; set; }
+        public int Age
+        {
+            get => _currCalc.Age;
+            private set
+            {
+                _currCalc.Age = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public bool IsAdult { get; set; }
-        public Zodiac.WesternZodiac SunSign { get; set; }
+        public bool IsAdult
+        {
+            get => _currCalc.IsAdult;
+            private set
+            {
+                _currCalc.IsAdult = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool IsBirthday
+        {
+            get => _currCalc.IsBirthday;
+            private set
+            {
+                _currCalc.IsBirthday = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public Zodiac.ChineseZodiac ChineseSign { get; set; }
+        public Zodiac.WesternZodiac SunSign
+        {
+            get => _currCalc.SunSign;
+            private set
+            {
+                _currCalc.SunSign = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public bool IsBirthday { get; set; }
+        public Zodiac.ChineseZodiac ChineseSign
+        {
+            get => _currCalc.ChineseSign;
+            private set
+            {
+                _currCalc.ChineseSign = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -122,9 +177,9 @@ namespace Lab_1.Models
             return !(age > MaxAge || age < MinAge || birthday.Date > DateTime.Today.Date);
         }
 
-        internal Person(string name = "Apple", string surname = "Vovan", string email = PersonData.DefaultEmail,
+        internal Person(string name = "Apple", string surname = "Vovan", string email = PersonCoreData.DefaultEmail,
             DateTime? birthday = null) :
-            this(birthday ?? PersonData.DefaultBirthday)
+            this(birthday ?? PersonCoreData.DefaultBirthday)
         {
             Name = name;
             Surname = surname;
@@ -137,8 +192,13 @@ namespace Lab_1.Models
         {
             return $"Happy birthday, {Name} {Surname}!\nCheckout your mail {Email} :)";
         }
+        
+        public override string ToString()
+        {
+            return $"ID: {_id}\nName: {_curr.Name} Birthday: \n{Birthday}";
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #region IEditableImplementation
 
         public void BeginEdit()
         {
@@ -149,7 +209,7 @@ namespace Lab_1.Models
 
         public void EndEdit()
         {
-            _backup = new PersonData();
+            _backup = new PersonCoreData();
             _isEditing = false;
         }
 
@@ -160,9 +220,19 @@ namespace Lab_1.Models
             _isEditing = false;
         }
 
-        public override string ToString()
+        #endregion
+
+        #region INotify
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            return $"ID: {_id}\nName: {_curr.Name} Birthday: \n{Birthday}";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
+
     }
 }

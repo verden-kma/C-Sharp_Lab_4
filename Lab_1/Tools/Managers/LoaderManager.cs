@@ -1,6 +1,6 @@
-﻿﻿using System.Windows;
+﻿using System.Windows;
 
- namespace Lab_1.Tools.Managers
+namespace Lab_1.Tools.Managers
 {
     internal class LoaderManager
     {
@@ -24,7 +24,6 @@
 
         private LoaderManager()
         {
-            
         }
 
         internal void Initialize(ILoaderOwner loaderOwner)
@@ -37,6 +36,7 @@
             _loaderOwner.LoaderVisibility = Visibility.Visible;
             _loaderOwner.IsControlEnabled = false;
         }
+
         internal void HideLoader()
         {
             _loaderOwner.LoaderVisibility = Visibility.Hidden;

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
@@ -35,8 +36,8 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466">
-          <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
-          <Private>True</Private>
+            <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+            <Private>True</Private>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
@@ -57,7 +58,7 @@
         <Compile Include="Models\Exceptions\IncorrectBirthday.cs" />
         <Compile Include="Models\Exceptions\IncorrectEmail.cs" />
         <Compile Include="Models\Exceptions\IrrelevantName.cs" />
-        <Compile Include="Models\PersonData.cs" />
+        <Compile Include="Models\PersonCoreData.cs" />
         <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Tools\BaseViewModel.cs" />
         <Compile Include="Tools\DataStorage\IDataStorage.cs" />
@@ -71,10 +72,10 @@
         <Compile Include="ViewModels\MainWindowViewModel.cs" />
         <Compile Include="ViewModels\PeopleVM.cs" />
         <Compile Include="Views\PeopleView.xaml.cs">
-          <DependentUpon>PeopleView.xaml</DependentUpon>
+            <DependentUpon>PeopleView.xaml</DependentUpon>
         </Compile>
         <Compile Include="Views\PersonDataEditor.xaml.cs">
-          <DependentUpon>PersonDataEditor.xaml</DependentUpon>
+            <DependentUpon>PersonDataEditor.xaml</DependentUpon>
         </Compile>
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>

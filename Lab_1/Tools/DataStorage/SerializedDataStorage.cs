@@ -22,14 +22,15 @@ namespace Lab_1.Tools.DataStorage
                 }
             }
         }
-        
+
         private SerializedDataStorage()
         {
             try
             {
-                List<PersonData> peopleData = SerializationManager.Deserialize<List<PersonData>>(FileFolderHandler.StorageFilePath);
+                List<PersonCoreData> peopleData =
+                    SerializationManager.Deserialize<List<PersonCoreData>>(FileFolderHandler.StorageFilePath);
                 PeopleList = new List<Person>(peopleData.Count);
-                foreach (PersonData pd in peopleData)
+                foreach (PersonCoreData pd in peopleData)
                 {
                     PeopleList.Add(new Person(pd.Name, pd.Surname, pd.Email, pd.Birthday));
                 }
@@ -59,7 +60,8 @@ namespace Lab_1.Tools.DataStorage
                     surname[j] = (char) (random.Next() % 25 + 65);
                 }
 
-                DateTime bday = new DateTime(1900 + random.Next() % 100, random.Next() % 12 + 1, random.Next() % 28 + 1);
+                DateTime bday = new DateTime(1900 + random.Next() % 100, random.Next() % 12 + 1,
+                    random.Next() % 28 + 1);
                 Person p = new Person(new string(name), new string(surname),
                     $"{new string(name)}.{new string(surname)}@gmail.com", bday);
                 list.Add(p);

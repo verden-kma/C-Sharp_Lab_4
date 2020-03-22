@@ -7,12 +7,11 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-        
-    <Grid IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                <birthAsker:BirthdateAsker />
-                <fa:ImageAwesome Icon="Refresh" Width="50" Height="50" Spin="True" 
-                                 Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-        </Grid>
-    
-</Window>
 
+    <Grid IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <birthAsker:BirthdateAsker />
+        <fa:ImageAwesome Icon="Refresh" Width="50" Height="50" Spin="True"
+                         Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+
+</Window>

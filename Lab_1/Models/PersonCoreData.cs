@@ -3,7 +3,7 @@
 namespace Lab_1.Models
 {
     [Serializable]
-    internal struct PersonData
+    internal struct PersonCoreData
     {
         internal string Name;
         internal string Surname;
