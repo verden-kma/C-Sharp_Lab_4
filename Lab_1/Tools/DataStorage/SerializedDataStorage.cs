@@ -7,9 +7,8 @@ namespace Lab_1.Tools.DataStorage
 {
     internal class SerializedDataStorage : IDataStorage
     {
-        private readonly List<Person> _peopleList;
+        public List<Person> PeopleList { get; }
 
-        public List<Person> PeopleList => _peopleList;
         private static readonly object Locker = new object();
         private static SerializedDataStorage _instance;
 
@@ -28,17 +27,22 @@ namespace Lab_1.Tools.DataStorage
         {
             try
             {
-                _peopleList = SerializationManager.Deserialize<List<Person>>(FileFolderHandler.StorageFilePath);
+                List<PersonData> peopleData = SerializationManager.Deserialize<List<PersonData>>(FileFolderHandler.StorageFilePath);
+                PeopleList = new List<Person>(peopleData.Count);
+                foreach (PersonData pd in peopleData)
+                {
+                    PeopleList.Add(new Person(pd.Name, pd.Surname, pd.Email, pd.Birthday));
+                }
             }
             catch (Exception)
             {
-                _peopleList = GeneratePersonList();
+                PeopleList = GeneratePersonList();
             }
         }
 
         private static List<Person> GeneratePersonList()
         {
-            int numPeople = 10;
+            const int numPeople = 10;
             List<Person> list = new List<Person>(numPeople);
             Random random = new Random();
             for (int i = 0; i < numPeople; i++)
@@ -66,20 +70,20 @@ namespace Lab_1.Tools.DataStorage
 
         public void AddPerson(Person user)
         {
-            _peopleList.Add(user);
+            PeopleList.Add(user);
             SaveChanges();
         }
 
         public void RemovePerson(Person p)
         {
-            _peopleList.Remove(p);
+            PeopleList.Remove(p);
             SaveChanges();
         }
 
 
         private void SaveChanges()
         {
-            SerializationManager.Serialize(_peopleList, FileFolderHandler.StorageFilePath);
+            SerializationManager.Serialize(PeopleList, FileFolderHandler.StorageFilePath);
         }
     }
 }

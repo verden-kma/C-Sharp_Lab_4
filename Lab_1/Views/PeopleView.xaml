@@ -29,15 +29,24 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="List of people" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding Path=ViewList}" SelectedItem="{Binding Path=Selected}" 
-                  AlternatingRowBackground="LightSlateGray" CanUserAddRows="True" AutoGenerateColumns="False">
+                  AlternatingRowBackground="LightSlateGray" CanUserAddRows="True" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False">
+            
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Command" Value="{Binding DataContext.SortCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                    <Setter Property="CommandParameter" Value="{Binding Path=Content, RelativeSource={RelativeSource Self}}"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Customer's name" Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
                 
-                <DataGridTextColumn Header="Customer's surname" Binding="{Binding Path=Surname}"/>
+                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname}"/>
                 
-                <DataGridTextColumn Header="Customer's email" Binding="{Binding Path=Email}"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}"/>
                 
-                <DataGridTemplateColumn Header="Birthday" SortMemberPath="Birthday" CanUserSort="True" IsReadOnly="False">
+                <DataGridTemplateColumn Header="Birthday"> <!-- SortMemberPath="Birthday" -->
+
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=Birthday, StringFormat=d}" />
@@ -54,13 +63,13 @@
                 
                 <DataGridTextColumn Header="Age" Binding="{Binding Path=Age}" />
                 
-                <DataGridCheckBoxColumn Header="Is adult" Binding="{Binding Path=IsAdult}" IsReadOnly="True" IsThreeState="False"/>
+                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult}" IsReadOnly="True"/>
                 
-                <DataGridCheckBoxColumn Header="Is birthday" Binding="{Binding Path=IsBirthday}" IsReadOnly="True" IsThreeState="False"/>
+                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday}" IsReadOnly="True"/>
                 
-                <DataGridTextColumn Header="Western Zodiac" Binding="{Binding Path=SunSign}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign}" IsReadOnly="True"/>
                 
-                <DataGridTextColumn Header="Chinese Zodiac" Binding="{Binding Path=ChineseSign}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign}" IsReadOnly="True"/>
                 
             </DataGrid.Columns>
             </DataGrid>

@@ -6,7 +6,7 @@ using Lab_1.Models.Exceptions;
 
 namespace Lab_1.Models
 {
-    [Serializable]
+
     internal class Person : INotifyPropertyChanged, IEditableObject
     {
         #region Fields
@@ -23,16 +23,7 @@ namespace Lab_1.Models
         private PersonData _backup;
         private PersonData _curr;
 
-        [Serializable]
-        private struct PersonData
-        {
-            internal string Name;
-            internal string Surname;
-            internal string Email;
-            internal DateTime Birthday;
-            internal const string DefaultEmail = "yablonskyivr@ukma.edu.ua";
-            internal static readonly DateTime DefaultDate = new DateTime(1995, 5, 12);
-        }
+        internal PersonData PersonExtract => _curr;
 
         #endregion
 
@@ -121,7 +112,7 @@ namespace Lab_1.Models
 
         private int CalcAge(DateTime d)
         {
-            int age = d.Year - d.Year;
+            int age = DateTime.Today.Year - d.Year;
             if (d.Date > d.AddYears(-age).Date) --age;
             return age;
         }
@@ -131,9 +122,9 @@ namespace Lab_1.Models
             return !(age > MaxAge || age < MinAge || birthday.Date > DateTime.Today.Date);
         }
 
-        internal Person(string name, string surname, string email = PersonData.DefaultEmail,
+        internal Person(string name = "Apple", string surname = "Vovan", string email = PersonData.DefaultEmail,
             DateTime? birthday = null) :
-            this(birthday ?? PersonData.DefaultDate)
+            this(birthday ?? PersonData.DefaultBirthday)
         {
             Name = name;
             Surname = surname;
