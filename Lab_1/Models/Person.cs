@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Windows;
 using Lab_1.Annotations;
 using Lab_1.Models.Exceptions;
 
@@ -12,7 +13,7 @@ namespace Lab_1.Models
         #region Fields
 
         private const string EmailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-        private readonly Regex _emailRegex = new Regex(EmailPattern);
+        private static readonly Regex _emailRegex = new Regex(EmailPattern);
         private static uint _freeId;
 
         private readonly uint _id;
@@ -46,7 +47,13 @@ namespace Lab_1.Models
             set
             {
                 if (string.IsNullOrWhiteSpace(value) ||
-                    value.Length < 2 || value.Length > 20) throw new IrrelevantName(value);
+                    value.Length < 2 || value.Length > 20)
+                {
+                    OnPropertyChanged();
+                    MessageBox.Show($"incorrect Name: \"{value}\"");
+                    throw new IrrelevantName(value);
+                }
+
                 _curr.Name = value.Trim();
                 OnPropertyChanged();
             }
@@ -58,7 +65,12 @@ namespace Lab_1.Models
             set
             {
                 if (string.IsNullOrWhiteSpace(value) || value.Length < 2 || value.Length > 20)
+                {
+                    OnPropertyChanged();
+                    MessageBox.Show($"incorrect Surname: \"{value}\"");
                     throw new IrrelevantName(value);
+                }
+
                 _curr.Surname = value.Trim();
                 OnPropertyChanged();
             }
@@ -69,11 +81,20 @@ namespace Lab_1.Models
             get => _curr.Email;
             set
             {
-                if (string.IsNullOrWhiteSpace(value) || !_emailRegex.IsMatch(value = value.Trim()))
+                if (!EmailIsValid(value = value.Trim()))
+                {
+                    OnPropertyChanged();
+                    MessageBox.Show($"Invalid email address: {value}");
                     throw new IncorrectEmail(value, EmailPattern);
+                }
                 _curr.Email = value;
                 OnPropertyChanged();
             }
+        }
+
+        internal static bool EmailIsValid(string email)
+        {
+            return !string.IsNullOrWhiteSpace(email) && _emailRegex.IsMatch(email);
         }
 
         public DateTime Birthday
@@ -83,7 +104,11 @@ namespace Lab_1.Models
             {
                 int proposedAge = CalcAge(value);
                 if (!AgeIsValid(proposedAge, value))
+                {
+                    MessageBox.Show($"Invalid birthday: {value.Date.ToLongDateString()}, Age = {proposedAge}.");
                     throw new IncorrectBirthday(value.Date, MinAge, MaxAge);
+                }
+
                 Age = proposedAge;
                 _curr.Birthday = value;
                 OnPropertyChanged();
@@ -114,7 +139,7 @@ namespace Lab_1.Models
                 OnPropertyChanged();
             }
         }
-        
+
         public bool IsBirthday
         {
             get => _currCalc.IsBirthday;
@@ -149,6 +174,18 @@ namespace Lab_1.Models
 
         #region Constructors
 
+        internal Person(string name = "Apple", string surname = "Vovan", string email = PersonCoreData.DefaultEmail,
+            DateTime? birthday = null) :
+            this(birthday ?? PersonCoreData.DefaultBirthday)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(surname))
+                throw new ArgumentException("Name and surname must not be empty.");
+            if (!EmailIsValid(email)) throw new IncorrectEmail(email, EmailPattern);
+            Name = name;
+            Surname = surname;
+            Email = email;
+        }
+
         private Person(DateTime birthday)
         {
             _id = _freeId++;
@@ -165,25 +202,21 @@ namespace Lab_1.Models
             ChineseSign = Zodiac.GetChineseZodiac(birthday);
         }
 
-        private int CalcAge(DateTime d)
+        private static int CalcAge(DateTime d)
         {
             int age = DateTime.Today.Year - d.Year;
             if (d.Date > d.AddYears(-age).Date) --age;
             return age;
         }
 
-        private bool AgeIsValid(int age, DateTime birthday)
+        private static bool AgeIsValid(int age, DateTime birthday)
         {
-            return !(age > MaxAge || age < MinAge || birthday.Date > DateTime.Today.Date);
+            return age <= MaxAge && age >= MinAge && birthday.Date < DateTime.Today.Date;
         }
 
-        internal Person(string name = "Apple", string surname = "Vovan", string email = PersonCoreData.DefaultEmail,
-            DateTime? birthday = null) :
-            this(birthday ?? PersonCoreData.DefaultBirthday)
+        internal static bool IsAlive(DateTime birthday)
         {
-            Name = name;
-            Surname = surname;
-            Email = email;
+            return AgeIsValid(CalcAge(birthday), birthday);
         }
 
         #endregion
@@ -192,7 +225,7 @@ namespace Lab_1.Models
         {
             return $"Happy birthday, {Name} {Surname}!\nCheckout your mail {Email} :)";
         }
-        
+
         public override string ToString()
         {
             return $"ID: {_id}\nName: {_curr.Name} Birthday: \n{Birthday}";
@@ -236,6 +269,5 @@ namespace Lab_1.Models
         }
 
         #endregion
-
     }
 }

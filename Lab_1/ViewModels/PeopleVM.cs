@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
+using Lab_1.Annotations;
 using Lab_1.Models;
 using Lab_1.Tools;
 using Lab_1.Tools.DataStorage;
@@ -14,9 +15,14 @@ using Lab_1.Tools.MVVM;
 
 namespace Lab_1.ViewModels
 {
-    internal class PeopleVM
+    internal class PeopleVM : INotifyPropertyChanged
     {
         #region Fields
+
+        private string _name;
+        private string _surname;
+        private string _email;
+        private DateTime _birthday = DateTime.Today;
 
         private RelayCommand<object> _save;
         private RelayCommand<object> _remove;
@@ -30,11 +36,54 @@ namespace Lab_1.ViewModels
 
         #endregion
 
-
         internal PeopleVM()
         {
             ViewList = new PeopleCollection(_backList);
         }
+
+        #region CreationData
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Surname
+        {
+            get => _surname;
+            set
+            {
+                _surname = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime Birthday
+        {
+            get => _birthday;
+            set
+            {
+                _birthday = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
 
 
         #region SortCmd
@@ -91,7 +140,7 @@ namespace Lab_1.ViewModels
             LoaderManager.Instance.ShowLoader();
             string errorMessage = await SaveList();
             LoaderManager.Instance.HideLoader();
-            if (!string.IsNullOrEmpty(errorMessage)) MessageBox.Show(errorMessage);
+            MessageBox.Show(!string.IsNullOrEmpty(errorMessage) ? errorMessage : "Saved successfully.");
         }
 
         private Task<string> SaveList()
@@ -148,16 +197,27 @@ namespace Lab_1.ViewModels
 
         private bool CanAdd()
         {
-            return true;
+            return !string.IsNullOrWhiteSpace(_name) && !string.IsNullOrWhiteSpace(_surname) &&
+                   !string.IsNullOrWhiteSpace(_email);
         }
 
         private void AddCommandImpl()
         {
-            MessageBox.Show("not implemented");
+            if (Name.Length < 2 || Name.Length > 20
+                                || Surname.Length < 2 || Surname.Length > 20
+                                || !Person.EmailIsValid(Email)
+                                || !Person.IsAlive(Birthday))
+            {
+                MessageBox.Show("Incorrect person data input.");
+                return;
+            }
+            Person p = new Person(Name, Surname, Email, Birthday);
+            ViewList.Add(p);
+            _backList.Add(p);
         }
 
         #endregion
-        
+
         #region FilterCmd
 
         public RelayCommand<object> FilterCommand
@@ -186,6 +246,14 @@ namespace Lab_1.ViewModels
             internal PeopleCollection(List<Person> basePeople) : base(basePeople)
             {
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

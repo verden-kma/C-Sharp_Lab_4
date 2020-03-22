@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="550" d:DesignWidth="900"
              xmlns:viewModels="clr-namespace:Lab_1.ViewModels">
 
     <UserControl.Resources>
@@ -13,12 +13,22 @@
             <Setter Property="Width" Value="100" />
             <Setter Property="Height" Value="40" />
         </Style>
+
+        <Style TargetType="StackPanel" x:Key="PanelMerge">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        
+        <Style TargetType="TextBox" x:Key="DefaultTBSize">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="24" />
+        </Style>
     </UserControl.Resources>
 
     <Grid Margin="5 5" DataContext="{Binding Source={StaticResource People}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="7*" />
+            <RowDefinition Height="3*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -44,13 +54,13 @@
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="*"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name, ValidatesOnExceptions=True}" Width="2*" />
 
-                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname}" Width="*"/>
+                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname, ValidatesOnExceptions=True}" Width="2*" />
 
-                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email, ValidatesOnExceptions=True}" Width="3*" />
 
-                <DataGridTemplateColumn Header="Birthday" Width="*">
+                <DataGridTemplateColumn Header="Birthday" Width="2*">
 
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -60,26 +70,68 @@
 
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <DatePicker SelectedDate="{Binding Path=Birthday}" />
+                            <DatePicker SelectedDate="{Binding Path=Birthday, ValidatesOnExceptions=True}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
 
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" Width="*" />
 
-                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}" IsReadOnly="True" Width="*"/>
+                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}"
+                                        IsReadOnly="True" Width="*" />
 
-                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}" IsReadOnly="True" Width="*"/>
+                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}"
+                                        IsReadOnly="True" Width="*" />
 
-                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}" IsReadOnly="True"
+                                    Width="2*" />
 
-                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}"
+                                    IsReadOnly="True" Width="2*" />
 
             </DataGrid.Columns>
         </DataGrid>
+        
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <ItemsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}" >
+                <TextBlock Text="Name: " Margin="0 5 0 0" />
+                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Name}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                <TextBlock Text="Surname: " Margin="0 5 0 0" />
+                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Surname}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                <TextBlock Text="Email: " Margin="0 5 0 0" />
+                <TextBox Style="{StaticResource DefaultTBSize}" Text="{Binding Path=Email}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource PanelMerge}">
+                <TextBlock Text="B-day: " Margin="0 5 0 0" />
+                <DatePicker SelectedDate="{Binding Birthday, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Birthday, UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="16" Margin="0 5" />
+            </StackPanel>
+            
+            <Separator Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Height="20"/>
+        </Grid>
+
+        <ItemsControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter Property="FrameworkElement.Margin" Value="5" />
@@ -92,8 +144,8 @@
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.Items>
-                <Button Style="{StaticResource ButtonStyle}" Content="Add" Command="{Binding Path=AddCommand}"/>
-                <Button Style="{StaticResource ButtonStyle}" Content="Filter" Command="{Binding Path=FilterCommand}"/>
+                <Button Style="{StaticResource ButtonStyle}" Content="Add" Command="{Binding Path=AddCommand}" />
+                <Button Style="{StaticResource ButtonStyle}" Content="Filter" Command="{Binding Path=FilterCommand}" />
                 <Button Style="{StaticResource ButtonStyle}" Content="Remove" Command="{Binding Path=RemoveCommand}" />
                 <Button Style="{StaticResource ButtonStyle}" Content="Save" Command="{Binding Path=SaveCommand}" />
             </ItemsControl.Items>
