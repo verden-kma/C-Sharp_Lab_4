@@ -68,14 +68,10 @@
         <Compile Include="Tools\Managers\LoaderManager.cs" />
         <Compile Include="Tools\Managers\SerializationManager.cs" />
         <Compile Include="Tools\MVVM\RelayCommand.cs" />
-        <Compile Include="ViewModels\ApplicationViewModel.cs" />
         <Compile Include="ViewModels\MainWindowViewModel.cs" />
         <Compile Include="ViewModels\PeopleVM.cs" />
         <Compile Include="Views\PeopleView.xaml.cs">
             <DependentUpon>PeopleView.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Views\PersonDataEditor.xaml.cs">
-            <DependentUpon>PersonDataEditor.xaml</DependentUpon>
         </Compile>
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
@@ -90,7 +86,6 @@
             <SubType>Code</SubType>
         </Compile>
         <Page Include="Views\PeopleView.xaml" />
-        <Page Include="Views\PersonDataEditor.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Models\Person.cs" />

@@ -149,13 +149,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" HorizontalAlignment="Center" Text="Filters"
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8" HorizontalAlignment="Center" Text="Filters"
                            FontSize="24" FontWeight="Bold" />
 
                 <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource PanelMerge}">
@@ -169,6 +170,11 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="2" Style="{StaticResource PanelMerge}">
+                    <TextBlock Text="Email Domain:" />
+                    <TextBox Text="{Binding Path=EmailDomain, Mode=OneWayToSource}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="1" Grid.Column="3" Style="{StaticResource PanelMerge}">
                     <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Birthday" />
                     <CheckBox IsChecked="{Binding Path=NeedDate, Mode=OneWayToSource}" Margin="5 0" />
@@ -185,7 +191,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="3" Style="{StaticResource PanelMerge}">
+                <StackPanel Grid.Row="1" Grid.Column="4" Style="{StaticResource PanelMerge}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Age" />
                         <CheckBox IsChecked="{Binding Path=NeedAge, Mode=OneWayToSource}" Margin="5 0"/>
@@ -201,10 +207,10 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="4" Style="{StaticResource PanelMerge}">
+                <StackPanel Grid.Row="1" Grid.Column="5" Style="{StaticResource PanelMerge}">
                     <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                         <TextBlock Text="Is Adult: " />
-                        <CheckBox IsChecked="{Binding Path=NeedAdult, Mode=OneWay}" />
+                        <CheckBox IsChecked="{Binding Path=NeedAdult, Mode=OneWayToSource}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                         <TextBlock Text="Is Birthday: " />
@@ -212,7 +218,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="5" Style="{StaticResource PanelMerge}">
+                <StackPanel Grid.Row="1" Grid.Column="6" Style="{StaticResource PanelMerge}">
                     <TextBlock Text="Western signs:" FontStyle="Italic" FontSize="16"/>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Style="{StaticResource PanelMerge}">
@@ -275,7 +281,7 @@
                 </StackPanel>
 
 
-                <StackPanel Grid.Row="1" Grid.Column="6" Margin="5">
+                <StackPanel Grid.Row="1" Grid.Column="7" Margin="5">
                     <TextBlock Text="Chinese signs:" FontStyle="Italic" FontSize="16"/>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Style="{StaticResource PanelMerge}">

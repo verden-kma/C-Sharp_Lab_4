@@ -48,6 +48,8 @@ namespace Lab_1.ViewModels
         public string NameStart { get; set; }
         public string SurnameStart { get; set; }
 
+        public string EmailDomain { get; set; }
+
         public bool NeedAge { get; set; }
         public bool NeedDate { get; set; }
 
@@ -332,7 +334,11 @@ namespace Lab_1.ViewModels
 
         private void ShowAllCommandImpl()
         {
-            MessageBox.Show("Not implemented.");
+            ViewList.Clear();
+            foreach (var p in _backList)
+            {
+                ViewList.Add(p);
+            }
         }
 
         private bool CanShowAll()
@@ -356,8 +362,9 @@ namespace Lab_1.ViewModels
         private bool CanFilter()
         {
             return _backList.Count != 0 &&
-                   (!string.IsNullOrEmpty(NameStart) || !string.IsNullOrEmpty(SurnameStart) || NeedDate
-                    || NeedBirthday || NeedAdult || NeedAge || CheckSigns());
+                   (!string.IsNullOrEmpty(NameStart) || !string.IsNullOrEmpty(SurnameStart)
+                                                     || !string.IsNullOrEmpty(EmailDomain) || NeedDate || NeedBirthday
+                                                     || NeedAdult || NeedAge || CheckSigns());
         }
 
         private bool CheckSigns()
@@ -375,9 +382,19 @@ namespace Lab_1.ViewModels
             await Task.Run(() =>
             {
                 if (!string.IsNullOrEmpty(NameStart))
-                    people = from person in people where person.Name.StartsWith(NameStart) select person;
+                    people = from person in people
+                        where person.Name.ToLower().StartsWith(NameStart.ToLower())
+                        select person;
                 if (!string.IsNullOrEmpty(SurnameStart))
-                    people = from person in people where person.Name.StartsWith(SurnameStart) select person;
+                    people = from person in people
+                        where person.Surname.ToLower().StartsWith(SurnameStart.ToLower())
+                        select person;
+                if (!string.IsNullOrWhiteSpace(EmailDomain))
+                    people = from person in people
+                        where person.Email.Substring(person.Email.IndexOf('@') + 1).ToLower()
+                            .Equals(EmailDomain.ToLower())
+                        select person;
+
                 if (NeedDate)
                     people = from person in people
                         where person.Birthday >= BDayFrom && person.Birthday <= BDayTo
@@ -388,7 +405,7 @@ namespace Lab_1.ViewModels
                     people = from person in people where person.Age >= AgeMin && person.Age <= AgeMax select person;
                 if (NeedAdult)
                     people = from person in people where person.IsAdult select person;
-                
+
                 List<Zodiac.WesternZodiac> westernZodiacs = GetWesternZodiacs();
                 if (westernZodiacs.Count != 0)
                 {
@@ -396,7 +413,7 @@ namespace Lab_1.ViewModels
                 }
 
                 List<Zodiac.ChineseZodiac> chineseZodiacs = GetChineseZodiacs();
-                if (westernZodiacs.Count != 0)
+                if (chineseZodiacs.Count != 0)
                 {
                     people = from person in people where chineseZodiacs.Contains(person.ChineseSign) select person;
                 }
@@ -406,6 +423,7 @@ namespace Lab_1.ViewModels
             {
                 ViewList.Add(p);
             }
+
             LoaderManager.Instance.HideLoader();
         }
 

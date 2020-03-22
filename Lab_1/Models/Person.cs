@@ -100,7 +100,7 @@ namespace Lab_1.Models
         public DateTime Birthday
         {
             get => _curr.Birthday.Date;
-            set
+            private set
             {
                 int proposedAge = CalcAge(value);
                 if (!AgeIsValid(proposedAge, value))
@@ -211,7 +211,7 @@ namespace Lab_1.Models
 
         private static bool AgeIsValid(int age, DateTime birthday)
         {
-            return age <= MaxAge && age >= MinAge && birthday.Date < DateTime.Today.Date;
+            return age <= MaxAge && age >= MinAge && birthday.Date <= DateTime.Today.Date;
         }
 
         internal static bool IsAlive(DateTime birthday)

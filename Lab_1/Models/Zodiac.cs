@@ -66,8 +66,7 @@ namespace Lab_1.Models
             Aquarius,
             Pisces
         }
-
-        //they are used indeed
+        
         public enum ChineseZodiac
         {
             Monkey = 0,
