@@ -16,19 +16,26 @@ namespace Lab_1.ViewModels
 {
     internal class PeopleVM
     {
+        #region Fields
+
         private RelayCommand<object> _save;
         private RelayCommand<object> _remove;
         private RelayCommand<object> _sort;
+        private RelayCommand<object> _add;
+        private RelayCommand<object> _filter;
 
         public PeopleCollection ViewList { get; set; }
         private List<Person> _backList = SerializedDataStorage.Instance.PeopleList;
+        public Person Selected { get; set; }
+
+        #endregion
+
 
         internal PeopleVM()
         {
             ViewList = new PeopleCollection(_backList);
         }
 
-        public Person Selected { get; set; }
 
         #region SortCmd
 
@@ -124,6 +131,52 @@ namespace Lab_1.ViewModels
         private void RemoveCommandImpl()
         {
             ViewList.Remove(Selected);
+        }
+
+        #endregion
+
+        #region AddCmd
+
+        public RelayCommand<object> AddCommand
+        {
+            get
+            {
+                return _add ?? (_add = new RelayCommand<object>
+                    (o => AddCommandImpl(), o => CanAdd()));
+            }
+        }
+
+        private bool CanAdd()
+        {
+            return true;
+        }
+
+        private void AddCommandImpl()
+        {
+            MessageBox.Show("not implemented");
+        }
+
+        #endregion
+        
+        #region FilterCmd
+
+        public RelayCommand<object> FilterCommand
+        {
+            get
+            {
+                return _filter ?? (_filter = new RelayCommand<object>
+                    (o => FilterCommandImpl(), o => CanFilter()));
+            }
+        }
+
+        private bool CanFilter()
+        {
+            return _backList.Count != 0;
+        }
+
+        private void FilterCommandImpl()
+        {
+            MessageBox.Show("not implemented");
         }
 
         #endregion

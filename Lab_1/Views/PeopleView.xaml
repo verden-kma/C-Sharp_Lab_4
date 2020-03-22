@@ -44,13 +44,13 @@
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="*"/>
 
-                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname}" />
+                <DataGridTextColumn Header="Surname" Binding="{Binding Path=Surname}" Width="*"/>
 
-                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" Width="*"/>
 
-                <DataGridTemplateColumn Header="Birthday"> <!-- SortMemberPath="Birthday" -->
+                <DataGridTemplateColumn Header="Birthday" Width="*">
 
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -66,15 +66,15 @@
 
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age, Mode=OneWay}" IsReadOnly="True" Width="*"/>
 
-                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}" IsReadOnly="True" />
+                <DataGridCheckBoxColumn Header="IsAdult" Binding="{Binding Path=IsAdult, Mode=OneWay}" IsReadOnly="True" Width="*"/>
 
-                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}" IsReadOnly="True" />
+                <DataGridCheckBoxColumn Header="IsBirthday" Binding="{Binding Path=IsBirthday, Mode=OneWay}" IsReadOnly="True" Width="*"/>
 
-                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}" IsReadOnly="True" />
+                <DataGridTextColumn Header="SunSign" Binding="{Binding Path=SunSign, Mode=OneWay}" IsReadOnly="True" Width="*"/>
 
-                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}" IsReadOnly="True" />
+                <DataGridTextColumn Header="ChineseSign" Binding="{Binding Path=ChineseSign, Mode=OneWay}" IsReadOnly="True" Width="*"/>
 
             </DataGrid.Columns>
         </DataGrid>
@@ -92,7 +92,8 @@
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.Items>
-                <Button Style="{StaticResource ButtonStyle}" Content="Filter" />
+                <Button Style="{StaticResource ButtonStyle}" Content="Add" Command="{Binding Path=AddCommand}"/>
+                <Button Style="{StaticResource ButtonStyle}" Content="Filter" Command="{Binding Path=FilterCommand}"/>
                 <Button Style="{StaticResource ButtonStyle}" Content="Remove" Command="{Binding Path=RemoveCommand}" />
                 <Button Style="{StaticResource ButtonStyle}" Content="Save" Command="{Binding Path=SaveCommand}" />
             </ItemsControl.Items>
