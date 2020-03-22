@@ -171,7 +171,7 @@
                 <StackPanel Grid.Row="1" Grid.Column="2" Style="{StaticResource PanelMerge}">
                     <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Birthday" />
-                    <CheckBox IsChecked="{Binding Path=NeedDate, Mode=OneWayToSource}" />
+                    <CheckBox IsChecked="{Binding Path=NeedDate, Mode=OneWayToSource}" Margin="5 0" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                         <TextBlock Text="From: " />
@@ -186,7 +186,10 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="3" Style="{StaticResource PanelMerge}">
-                    <TextBlock Text="Age" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Age" />
+                        <CheckBox IsChecked="{Binding Path=NeedAge, Mode=OneWayToSource}" Margin="5 0"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Style="{StaticResource PanelMerge}">
                         <TextBlock Text="From: " />
                         <TextBox Text="{Binding Path=AgeMin, ValidatesOnExceptions=True}" MinWidth="30" />
@@ -353,6 +356,7 @@
             <ItemsControl.Items>
                 <Button Style="{StaticResource ButtonStyle}" Content="Add" Command="{Binding Path=AddCommand}" />
                 <Button Style="{StaticResource ButtonStyle}" Content="Filter" Command="{Binding Path=FilterCommand}" />
+                <Button Style="{StaticResource ButtonStyle}" Content="Show All" Command="{Binding Path=ShowAllCommand}" />
                 <Button Style="{StaticResource ButtonStyle}" Content="Remove" Command="{Binding Path=RemoveCommand}" />
                 <Button Style="{StaticResource ButtonStyle}" Content="Save" Command="{Binding Path=SaveCommand}" />
             </ItemsControl.Items>

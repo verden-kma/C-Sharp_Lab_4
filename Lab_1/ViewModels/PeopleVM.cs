@@ -29,6 +29,7 @@ namespace Lab_1.ViewModels
         private RelayCommand<object> _sort;
         private RelayCommand<object> _add;
         private RelayCommand<object> _filter;
+        private RelayCommand<object> _showAll;
 
         public PeopleCollection ViewList { get; set; }
         private List<Person> _backList = SerializedDataStorage.Instance.PeopleList;
@@ -47,8 +48,9 @@ namespace Lab_1.ViewModels
         public string NameStart { get; set; }
         public string SurnameStart { get; set; }
 
+        public bool NeedAge { get; set; }
         public bool NeedDate { get; set; }
-        
+
         public DateTime BDayFrom
         {
             get => _fromDate;
@@ -317,6 +319,29 @@ namespace Lab_1.ViewModels
 
         #endregion
 
+        #region ShowAll
+
+        public RelayCommand<object> ShowAllCommand
+        {
+            get
+            {
+                return _showAll ?? (_showAll = new RelayCommand<object>
+                    (o => ShowAllCommandImpl(), o => CanShowAll()));
+            }
+        }
+
+        private void ShowAllCommandImpl()
+        {
+            MessageBox.Show("Not implemented.");
+        }
+
+        private bool CanShowAll()
+        {
+            return _backList.Count != 0;
+        }
+
+        #endregion
+
         #region FilterCmd
 
         public RelayCommand<object> FilterCommand
@@ -331,8 +356,8 @@ namespace Lab_1.ViewModels
         private bool CanFilter()
         {
             return _backList.Count != 0 &&
-                   (!string.IsNullOrEmpty(NameStart) || !string.IsNullOrEmpty(SurnameStart) || NeedDate 
-                                                     || NeedBirthday || NeedAdult || AgeMax != 0 || CheckSigns() );
+                   (!string.IsNullOrEmpty(NameStart) || !string.IsNullOrEmpty(SurnameStart) || NeedDate
+                    || NeedBirthday || NeedAdult || NeedAge || CheckSigns());
         }
 
         private bool CheckSigns()
@@ -342,11 +367,87 @@ namespace Lab_1.ViewModels
                    || NeedMonkey || NeedRooster || NeedDog || NeedPig || NeedRat || NeedOx || NeedTiger || NeedRabbit ||
                    NeedDragon || NeedSnake || NeedHorse || NeedGoat;
         }
-        
-        private void FilterCommandImpl()
+
+        private async void FilterCommandImpl()
         {
-            MessageBox.Show("not implemented");
+            IEnumerable<Person> people = _backList.AsEnumerable();
+            LoaderManager.Instance.ShowLoader();
+            await Task.Run(() =>
+            {
+                if (!string.IsNullOrEmpty(NameStart))
+                    people = from person in people where person.Name.StartsWith(NameStart) select person;
+                if (!string.IsNullOrEmpty(SurnameStart))
+                    people = from person in people where person.Name.StartsWith(SurnameStart) select person;
+                if (NeedDate)
+                    people = from person in people
+                        where person.Birthday >= BDayFrom && person.Birthday <= BDayTo
+                        select person;
+                if (NeedBirthday)
+                    people = from person in people where person.IsBirthday select person;
+                if (NeedAge)
+                    people = from person in people where person.Age >= AgeMin && person.Age <= AgeMax select person;
+                if (NeedAdult)
+                    people = from person in people where person.IsAdult select person;
+                
+                List<Zodiac.WesternZodiac> westernZodiacs = GetWesternZodiacs();
+                if (westernZodiacs.Count != 0)
+                {
+                    people = from person in people where westernZodiacs.Contains(person.SunSign) select person;
+                }
+
+                List<Zodiac.ChineseZodiac> chineseZodiacs = GetChineseZodiacs();
+                if (westernZodiacs.Count != 0)
+                {
+                    people = from person in people where chineseZodiacs.Contains(person.ChineseSign) select person;
+                }
+            });
+            ViewList.Clear();
+            foreach (Person p in people)
+            {
+                ViewList.Add(p);
+            }
+            LoaderManager.Instance.HideLoader();
         }
+
+        #region getZodiacs
+
+        private List<Zodiac.WesternZodiac> GetWesternZodiacs()
+        {
+            List<Zodiac.WesternZodiac> selected = new List<Zodiac.WesternZodiac>();
+            if (NeedAries) selected.Add(Zodiac.WesternZodiac.Aries);
+            if (NeedTaurus) selected.Add(Zodiac.WesternZodiac.Taurus);
+            if (NeedGemini) selected.Add(Zodiac.WesternZodiac.Gemini);
+            if (NeedCancer) selected.Add(Zodiac.WesternZodiac.Cancer);
+            if (NeedLeo) selected.Add(Zodiac.WesternZodiac.Leo);
+            if (NeedVirgo) selected.Add(Zodiac.WesternZodiac.Virgo);
+            if (NeedLibra) selected.Add(Zodiac.WesternZodiac.Libra);
+            if (NeedScorpio) selected.Add(Zodiac.WesternZodiac.Scorpio);
+            if (NeedSagittarius) selected.Add(Zodiac.WesternZodiac.Sagittarius);
+            if (NeedCapricorn) selected.Add(Zodiac.WesternZodiac.Capricorn);
+            if (NeedAquarius) selected.Add(Zodiac.WesternZodiac.Aquarius);
+            if (NeedPisces) selected.Add(Zodiac.WesternZodiac.Pisces);
+            return selected;
+        }
+
+        private List<Zodiac.ChineseZodiac> GetChineseZodiacs()
+        {
+            List<Zodiac.ChineseZodiac> selected = new List<Zodiac.ChineseZodiac>();
+            if (NeedMonkey) selected.Add(Zodiac.ChineseZodiac.Monkey);
+            if (NeedRooster) selected.Add(Zodiac.ChineseZodiac.Rooster);
+            if (NeedDog) selected.Add(Zodiac.ChineseZodiac.Dog);
+            if (NeedPig) selected.Add(Zodiac.ChineseZodiac.Pig);
+            if (NeedRat) selected.Add(Zodiac.ChineseZodiac.Rat);
+            if (NeedOx) selected.Add(Zodiac.ChineseZodiac.Ox);
+            if (NeedTiger) selected.Add(Zodiac.ChineseZodiac.Tiger);
+            if (NeedRabbit) selected.Add(Zodiac.ChineseZodiac.Rabbit);
+            if (NeedDragon) selected.Add(Zodiac.ChineseZodiac.Dragon);
+            if (NeedSnake) selected.Add(Zodiac.ChineseZodiac.Snake);
+            if (NeedHorse) selected.Add(Zodiac.ChineseZodiac.Horse);
+            if (NeedGoat) selected.Add(Zodiac.ChineseZodiac.Goat);
+            return selected;
+        }
+
+        #endregion
 
         #endregion
 
