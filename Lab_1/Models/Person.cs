@@ -205,11 +205,13 @@ namespace Lab_1.Models
             if (_isEditing) return;
             _isEditing = true;
             _backup = _curr;
+            _backupCalc = _currCalc;
         }
 
         public void EndEdit()
         {
             _backup = new PersonCoreData();
+            _backupCalc = new PersonCalcData();
             _isEditing = false;
         }
 
@@ -217,6 +219,7 @@ namespace Lab_1.Models
         {
             if (!_isEditing) return;
             _curr = _backup;
+            _currCalc = _backupCalc;
             _isEditing = false;
         }
 
